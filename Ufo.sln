@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ufo", "Ufo\Ufo.csproj", "{018E8D63-20AD-49F2-8AA5-4044C5F3DC5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{018E8D63-20AD-49F2-8AA5-4044C5F3DC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{018E8D63-20AD-49F2-8AA5-4044C5F3DC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{018E8D63-20AD-49F2-8AA5-4044C5F3DC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{018E8D63-20AD-49F2-8AA5-4044C5F3DC5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1FCC25AC-F113-4007-8F62-60C98A16C541}
+	EndGlobalSection
+EndGlobal
