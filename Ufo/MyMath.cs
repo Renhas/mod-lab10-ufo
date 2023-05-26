@@ -39,7 +39,7 @@ namespace Ufo
                 result += one * current_x / denominator;
                 one *= -1;
                 current_x *= x * x;
-                denominator *= (i + 1) * (i + 2);
+                denominator *= (2*i + 1) * (2*i + 2);
             }
 
             return result;
@@ -57,7 +57,7 @@ namespace Ufo
                 result += one * current_x / denominator;
                 one *= -1;
                 current_x *= x * x;
-                denominator *= (i + 2) * (i + 3);
+                denominator *= (2 * i + 2) * (2 * i + 3);
             }
 
             return result;

@@ -133,6 +133,7 @@ namespace Ufo
                 Thread.Sleep(100);
 
             }
+            Analysis.semaphore.WaitOne();
             researchButton.BeginInvoke(() => researchButton.Enabled = true);
             progressBar.BeginInvoke(() => progressBar.Visible = false);
         }

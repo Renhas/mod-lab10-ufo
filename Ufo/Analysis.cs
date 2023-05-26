@@ -9,16 +9,49 @@ namespace Ufo
 {
     static internal class Analysis
     {
-        static readonly double distance = 1e5;
         static public readonly Semaphore semaphore = new Semaphore(0, 1);
-        static private int max_acc = 1000;
-        static private double step = 1;
+        static readonly double distance = 1e5;
+        //static readonly double min_distance = 1e-3;
+        //static readonly double max_distance = 1;
+        static readonly int max_acc = (int)5e2;
+        //static readonly int count_of_points = (int)1e2;
+        static readonly double step = 1;
+        
         static private int count = 0;
         static public void Analyse()
-        { 
+        {
             double[] acc = new double[max_acc];
             double[] result = new double[max_acc];
+
+            //double[] acc = new double[count_of_points];
+            //double[] distances = Linspace(min_distance, max_distance, count_of_points);
             count = 0;
+            /*
+            foreach (var dist in distances) 
+            {
+                
+                int good_acc = 0;
+                int start = 1;
+                int end = max_acc;
+                int current_acc = (start + end) / 2;
+                for (int i = 0; i < Math.Ceiling(Math.Log2(max_acc + 1)); i++)
+                {
+                    if (IsEnter(current_acc, dist))
+                    {
+                        good_acc = current_acc;
+                        end = current_acc - 1;
+                    }
+                    else 
+                    {
+                        start = current_acc + 1;
+                    }
+                    current_acc = (start + end) / 2;
+                }
+                acc[count] = good_acc;
+                count++;
+            }
+            Draw(distances, acc);
+            */
             for (int i = 0; i < max_acc; i++) 
             {
                 acc[i] = i + 1;
@@ -27,6 +60,7 @@ namespace Ufo
             }
             
             Draw(acc, result);
+            
             semaphore.Release();
         }
 
@@ -39,20 +73,52 @@ namespace Ufo
             double x1 = startPoint.X, x2 = endPoint.X;
             double y1 = startPoint.Y, y2 = endPoint.Y;
             double angle = MyMath.Atn(Math.Abs(y2 - y1) / Math.Abs(x2 - x1), accuracy);
-
-            double true_distance = Distance(startPoint, endPoint);
-            double current_distance = Distance(startPoint, currentPoint);
+            double distance_to_end = Distance(currentPoint, endPoint);
 
             double current_x = currentPoint.X, current_y = currentPoint.Y;
-            while (current_distance < true_distance)
+            double current_distance = distance_to_end + 1;
+            while (current_distance > distance_to_end)
+            {
+                current_distance = distance_to_end;
+                current_x += step * MyMath.Cos(angle, accuracy);
+                current_y += step * MyMath.Sin(angle, accuracy);
+
+                currentPoint = new PointD(current_x, current_y);
+                distance_to_end = Distance(currentPoint, endPoint);
+            }
+            return Math.Min(distance_to_end, current_distance);
+        }
+
+        static private bool IsEnter(int accuracy, double value) 
+        {
+            PointD startPoint = new PointD(0, 0);
+            PointD endPoint = new PointD(distance / Math.Sqrt(2), distance / Math.Sqrt(2));
+            PointD currentPoint = (PointD)startPoint.Clone();
+
+            double x1 = startPoint.X, x2 = endPoint.X;
+            double y1 = startPoint.Y, y2 = endPoint.Y;
+            double angle = MyMath.Atn(Math.Abs(y2 - y1) / Math.Abs(x2 - x1), accuracy);
+            
+            double distance_to_end = Distance(currentPoint, endPoint);
+
+            double current_x = currentPoint.X, current_y = currentPoint.Y;
+            double current_distance = distance_to_end;
+            while (distance_to_end > value)
             {
                 current_x += step * MyMath.Cos(angle, accuracy);
                 current_y += step * MyMath.Sin(angle, accuracy);
 
                 currentPoint = new PointD(current_x, current_y);
-                current_distance = Distance(startPoint, currentPoint);
+                distance_to_end = Distance(currentPoint, endPoint);
+
+                if (current_distance < distance_to_end) 
+                {
+                    return false;
+                }
+                current_distance = distance_to_end;
+                
             }
-            return Distance(currentPoint, endPoint);
+            return true;
         }
 
         static public double Distance(PointD first, PointD second)
@@ -73,7 +139,15 @@ namespace Ufo
 
         static public float GetProgress() 
         {
+            //return (float)count / count_of_points;
             return (float)count / max_acc;
+        }
+
+        public static double[] Linspace(double start_val, double end_val, int steps)
+        {
+            double interval = (end_val / Math.Abs(end_val)) * Math.Abs(end_val - start_val) / (steps - 1);
+            return (from val in Enumerable.Range(0, steps)
+                    select start_val + (val * interval)).ToArray();
         }
     }
 }
