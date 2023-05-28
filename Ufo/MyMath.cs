@@ -9,9 +9,16 @@ namespace Ufo
 {
     static public class MyMath
     {
+        private const double PI = Math.PI;
         static public double Atn(double x, int count) 
         {
             double result = 0;
+            bool reversive = false;
+            if (Math.Abs(x) > 1) 
+            {
+                x = 1 / x;
+                reversive = true;
+            }
 
             int one = 1;
             double current_x = x;
@@ -23,7 +30,10 @@ namespace Ufo
                 current_x *= x * x;
                 denominator += 2;
             }
-
+            if (reversive) 
+            {
+                result = PI / 2 - result;
+            }
             return result;
         }
 

@@ -22,6 +22,14 @@ namespace Ufo
         {
             double[] acc = new double[max_acc];
             double[] result = new double[max_acc];
+            double[] x = Linspace(1, 50, 50);
+            double[] arctg = new double[50];
+            for (int i = 0; i < 50; i++) 
+            {
+                arctg[i] = MyMath.Atn(Math.Sqrt(3), (int)x[i]);
+            }
+            Draw(x, arctg);
+            return;
 
             //double[] acc = new double[count_of_points];
             //double[] distances = Linspace(min_distance, max_distance, count_of_points);
